@@ -183,6 +183,7 @@ export default defineComponent({
   --space-m: 1rem;
   --space-s: 0.5rem;
   --space-xs: 0.2rem;
+  --thickness-s: 0.01rem;
   --font-l: 22pt;
   --font-m: 14pt;
   --font-s: 10pt;
@@ -235,7 +236,6 @@ h1 {
 
 .card .header {
   padding: var(--space-s) var(--space-s) var(--space-xs) var(--space-s);
-  border-bottom: black solid 1px;
 }
 .card .content {
   padding: var(--space-s);
@@ -244,7 +244,18 @@ h1 {
 /* EP-CHAR-ORIGINS */
 
 .ep-char-origins .card {
+  --color-dark: hsl(126.4, 9.6%, 42.3%);
   background-color: hsl(126.3, 72.7%, 88.3%);
+  color: var(--color-dark);
+}
+.ep-char-origins .card .header {
+  background-color: hsl(126.4, 49.3%, 83.7%);
+}
+.ep-char-origins .title {
+  font-weight: bold;
+}
+.ep-char-origins .number {
+  font-size: var(--font-s);
 }
 .ep-char-origins .card ul {
   display: flex;
