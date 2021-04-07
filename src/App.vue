@@ -1,9 +1,9 @@
 <template>
   <article class="container">
-    <h1>Hechos inútiles sobre Rick &amp; Morty</h1>
+    <h1>Hechos inútiles sobre <b>Rick and Morty</b></h1>
     <section class="box">
       <div class="description">
-        Cuántas veces se repite una letra en el nombre de…
+        ¿Cuántas veces se repiten letras en nombres?
       </div>
       <div class="items">
         <div class="card">L en lugares</div>
@@ -13,8 +13,7 @@
     </section>
     <section class="ep-char-origins box">
       <div class="description">
-        Para cada capítulo, una lista con el origen de todos los personajes que
-        aparecen en ese capítulo.
+        ¿De dónde vienen los personajes que aparecen en cada capítulo?
       </div>
       <div class="items">
         <section class="card">
@@ -177,16 +176,21 @@ export default defineComponent({
 
 <style>
 :root {
-  --color-back: hsl(0, 0%, 91.3%);
-  --color-box: hsl(0, 0%, 94.8%);
+  --color-back: hsl(0, 0%, 95%);
+  --color-box: hsl(0, 0%, 98%);
+  --color-green-dark: hsl(126.4, 9.6%, 42.3%);
+  --color-green: hsl(126.4, 43.3%, 64.7%);
+  --color-green-light: hsl(126.4, 49.3%, 83.7%);
+  --color-green-lighter: hsl(126.3, 72.7%, 88.3%);
   --space-l: 1.7rem;
   --space-m: 1rem;
   --space-s: 0.5rem;
   --space-xs: 0.2rem;
   --thickness-s: 0.01rem;
-  --font-l: 22pt;
-  --font-m: 14pt;
-  --font-s: 10pt;
+  --font-xl: 28pt;
+  --font-l: 16pt;
+  --font-m: 13pt;
+  --font-s: 9pt;
 
   font-size: var(--font-m);
   line-height: 1.3;
@@ -208,9 +212,13 @@ li {
 }
 
 h1 {
-  font-size: var(--font-l);
+  font-size: var(--font-xl);
+  font-weight: normal;
   margin: 0;
   padding: 0;
+}
+h1 b {
+  color: var(--color-green);
 }
 
 .container {
@@ -224,7 +232,11 @@ h1 {
   margin: var(--space-m) 0;
   background-color: var(--color-box);
 }
-.items {
+.box .description {
+  padding-bottom: var(--space-m);
+  font-size: var(--font-l);
+}
+.box .items {
   display: grid;
   grid-template-columns:
     1fr
@@ -244,12 +256,12 @@ h1 {
 /* EP-CHAR-ORIGINS */
 
 .ep-char-origins .card {
-  --color-dark: hsl(126.4, 9.6%, 42.3%);
-  background-color: hsl(126.3, 72.7%, 88.3%);
+  --color-dark: var(--color-green-dark);
+  background-color: var(--color-green-lighter);
   color: var(--color-dark);
 }
 .ep-char-origins .card .header {
-  background-color: hsl(126.4, 49.3%, 83.7%);
+  background-color: var(--color-green-light);
 }
 .ep-char-origins .title {
   font-weight: bold;
