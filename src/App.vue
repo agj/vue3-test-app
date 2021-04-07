@@ -1,19 +1,33 @@
 <template>
-  <div class="box">
-    Letra L en lugares<br />
-    Letra E en episodios<br />
-    Letra C en personajes
-  </div>
-  <div class="box">
+  <h1>Hechos inútiles sobre Rick &amp; Morty</h1>
+  <section class="box">
+    <h2>Cuántas veces se repite una letra en el nombre de…</h2>
+    <div class="card">L en lugares</div>
+    <div class="card">E en episodios</div>
+    <div class="card">C en personajes</div>
+  </section>
+  <section class="box">
     <p>
       Para cada capítulo, una lista con el origen de todos los personajes que
       aparecen en ese capítulo.
     </p>
-    <div class="card">
-      S01E01 Pilot<br />
-      Earth
-    </div>
-  </div>
+    <section class="card">
+      <h3>S01E01 Pilot</h3>
+      <ul>
+        <li>Earth</li>
+        <li>Mars</li>
+        <li>Jupiter</li>
+      </ul>
+    </section>
+    <section class="card">
+      <h3>S01E01 Pilot</h3>
+      <ul>
+        <li>Earth</li>
+        <li>Mars</li>
+        <li>Jupiter</li>
+      </ul>
+    </section>
+  </section>
 </template>
 
 <script lang="ts">
