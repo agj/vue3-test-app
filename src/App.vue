@@ -18,8 +18,9 @@
       <div class="items">
         <section class="card">
           <div class="header">
-            <div class="title">Pilot</div>
-            <div class="number">T01E01</div>
+            <div class="location-amount">6</div>
+            <div class="episode-title">Pilot</div>
+            <div class="episode-number">T01E01</div>
           </div>
           <div class="content">
             <ul class="locations">
@@ -34,8 +35,9 @@
         </section>
         <section class="card">
           <div class="header">
-            <div class="title">Pilot</div>
-            <div class="number">T01E01</div>
+            <div class="location-amount">6</div>
+            <div class="episode-title">Pilot</div>
+            <div class="episode-number">T01E01</div>
           </div>
           <div class="content">
             <ul class="locations">
@@ -50,8 +52,9 @@
         </section>
         <section class="card">
           <div class="header">
-            <div class="title">Pilot</div>
-            <div class="number">T01E01</div>
+            <div class="location-amount">6</div>
+            <div class="episode-title">Pilot</div>
+            <div class="episode-number">T01E01</div>
           </div>
           <div class="content">
             <ul class="locations">
@@ -66,8 +69,9 @@
         </section>
         <section class="card">
           <div class="header">
-            <div class="title">Pilot</div>
-            <div class="number">T01E01</div>
+            <div class="location-amount">6</div>
+            <div class="episode-title">Pilot</div>
+            <div class="episode-number">T01E01</div>
           </div>
           <div class="content">
             <ul class="locations">
@@ -82,8 +86,9 @@
         </section>
         <section class="card">
           <div class="header">
-            <div class="title">Pilot</div>
-            <div class="number">T01E01</div>
+            <div class="location-amount">6</div>
+            <div class="episode-title">Pilot</div>
+            <div class="episode-number">T01E01</div>
           </div>
           <div class="content">
             <ul class="locations">
@@ -98,8 +103,9 @@
         </section>
         <section class="card">
           <div class="header">
-            <div class="title">Pilot</div>
-            <div class="number">T01E01</div>
+            <div class="location-amount">6</div>
+            <div class="episode-title">Pilot</div>
+            <div class="episode-number">T01E01</div>
           </div>
           <div class="content">
             <ul class="locations">
@@ -114,8 +120,9 @@
         </section>
         <section class="card">
           <div class="header">
-            <div class="title">Pilot</div>
-            <div class="number">T01E01</div>
+            <div class="location-amount">6</div>
+            <div class="episode-title">Pilot</div>
+            <div class="episode-number">T01E01</div>
           </div>
           <div class="content">
             <ul class="locations">
@@ -130,8 +137,9 @@
         </section>
         <section class="card">
           <div class="header">
-            <div class="title">Pilot</div>
-            <div class="number">T01E01</div>
+            <div class="location-amount">6</div>
+            <div class="episode-title">Pilot</div>
+            <div class="episode-number">T01E01</div>
           </div>
           <div class="content">
             <ul class="locations">
@@ -146,8 +154,9 @@
         </section>
         <section class="card">
           <div class="header">
-            <div class="title">Pilot</div>
-            <div class="number">T01E01</div>
+            <div class="location-amount">6</div>
+            <div class="episode-title">Pilot</div>
+            <div class="episode-number">T01E01</div>
           </div>
           <div class="content">
             <ul class="locations">
@@ -263,11 +272,21 @@ h1 b {
 .ep-char-origins .card .header {
   background-color: var(--color-green-light);
 }
-.ep-char-origins .title {
+.ep-char-origins .episode-title {
   font-weight: bold;
 }
-.ep-char-origins .number {
+.ep-char-origins .episode-number {
   font-size: var(--font-s);
+}
+.ep-char-origins .location-amount {
+  border-radius: 1rem;
+  background-color: var(--color-green-lighter);
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  float: right;
 }
 .ep-char-origins .card ul {
   display: flex;
