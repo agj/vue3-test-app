@@ -6,27 +6,15 @@
         ¿Cuántas veces se repiten letras en nombres?
       </div>
       <div class="items rows-3">
-        <section class="card">
-          <div class="header">
-            <div class="letter">L</div>
-            <div class="amount">65</div>
-          </div>
-          <div class="content">veces en nombres de lugares</div>
-        </section>
-        <section class="card">
-          <div class="header">
-            <div class="letter">E</div>
-            <div class="amount">189</div>
-          </div>
-          <div class="content">veces en títulos de capítulos</div>
-        </section>
-        <section class="card">
-          <div class="header">
-            <div class="letter">C</div>
-            <div class="amount">12</div>
-          </div>
-          <div class="content">veces en nombres de personajes</div>
-        </section>
+        <LetterCount letter="L" :amount="65">
+          veces en nombres de lugares
+        </LetterCount>
+        <LetterCount letter="E" :amount="189">
+          veces en títulos de capítulos
+        </LetterCount>
+        <LetterCount letter="C" :amount="12">
+          veces en nombres de personajes
+        </LetterCount>
       </div>
     </section>
     <section class="ep-char-origins box">
@@ -195,9 +183,13 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import LetterCount from "./components/LetterCount.vue";
+
 export default defineComponent({
   name: "App",
-  components: {},
+  components: {
+    LetterCount,
+  },
 });
 </script>
 
