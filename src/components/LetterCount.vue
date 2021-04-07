@@ -19,10 +19,10 @@ export default {
       type: Object as () => Data,
     },
   },
-  setup({ data }) {
+  setup(props: { data?: Data }) {
     return {
-      letter: data?.letter ?? "…",
-      amount: data?.amount.toString() ?? "…",
+      letter: props.data?.letter ?? "…",
+      amount: props.data?.amount.toString() ?? "…",
     };
   },
 };
