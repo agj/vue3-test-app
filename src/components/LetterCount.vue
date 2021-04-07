@@ -27,3 +27,33 @@ export default {
   setup() {},
 };
 </script>
+
+<style>
+.letter-count .card {
+  background-color: var(--color-green-lighter);
+  color: var(--color-green-dark);
+}
+
+.letter-count .card .header {
+  background-color: var(--color-green-dark);
+  color: var(--color-green-light);
+  display: grid;
+  grid-template-columns:
+    1fr
+    1fr;
+  font-size: var(--font-l);
+  font-weight: bold;
+}
+.letter-count .letter {
+  color: var(--color-lighter);
+  text-align: right;
+  margin-right: var(--space-s);
+}
+.letter-count .amount {
+  margin-left: var(--space-s);
+}
+
+.letter-count .content {
+  text-align: center;
+}
+</style>
