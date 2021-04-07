@@ -1,21 +1,39 @@
 <template>
   <article class="container">
     <h1>Hechos inútiles sobre <b>Rick and Morty</b></h1>
-    <section class="box">
+    <section class="letter-count box">
       <div class="description">
         ¿Cuántas veces se repiten letras en nombres?
       </div>
-      <div class="items">
-        <div class="card">L en lugares</div>
-        <div class="card">E en episodios</div>
-        <div class="card">C en personajes</div>
+      <div class="items rows-3">
+        <section class="card">
+          <div class="header">
+            <div class="letter">L</div>
+            <div class="amount">65</div>
+          </div>
+          <div class="content">veces en nombres de lugares</div>
+        </section>
+        <section class="card">
+          <div class="header">
+            <div class="letter">E</div>
+            <div class="amount">189</div>
+          </div>
+          <div class="content">veces en títulos de capítulos</div>
+        </section>
+        <section class="card">
+          <div class="header">
+            <div class="letter">C</div>
+            <div class="amount">12</div>
+          </div>
+          <div class="content">veces en nombres de personajes</div>
+        </section>
       </div>
     </section>
     <section class="ep-char-origins box">
       <div class="description">
         ¿De dónde vienen los personajes que aparecen en cada capítulo?
       </div>
-      <div class="items">
+      <div class="items rows-4">
         <section class="card">
           <div class="header">
             <div class="location-amount">6</div>
@@ -185,8 +203,8 @@ export default defineComponent({
 
 <style>
 :root {
-  --color-back: hsl(0, 0%, 95%);
-  --color-box: hsl(0, 0%, 98%);
+  --color-light: hsl(0, 0%, 95%);
+  --color-lighter: hsl(0, 0%, 98%);
   --color-green-dark: hsl(126.4, 9.6%, 42.3%);
   --color-green: hsl(126.4, 43.3%, 64.7%);
   --color-green-light: hsl(126.4, 49.3%, 83.7%);
@@ -208,7 +226,7 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--color-back);
+  background-color: var(--color-light);
 }
 * {
   box-sizing: border-box;
@@ -230,22 +248,15 @@ h1 b {
   color: var(--color-green);
 }
 
-.container {
-  font-family: Helvetica, Arial, sans-serif;
-  max-width: 50rem;
-  padding: var(--space-m);
-  margin: 0 auto;
+.rows-3 {
+  display: grid;
+  grid-template-columns:
+    1fr
+    1fr
+    1fr;
+  gap: var(--space-xs);
 }
-.box {
-  padding: 1rem;
-  margin: var(--space-m) 0;
-  background-color: var(--color-box);
-}
-.box .description {
-  padding-bottom: var(--space-m);
-  font-size: var(--font-l);
-}
-.box .items {
+.rows-4 {
   display: grid;
   grid-template-columns:
     1fr
@@ -255,6 +266,22 @@ h1 b {
   gap: var(--space-xs);
 }
 
+.container {
+  font-family: Helvetica, Arial, sans-serif;
+  max-width: 50rem;
+  padding: var(--space-m);
+  margin: 0 auto;
+}
+.box {
+  padding: 1rem;
+  margin: var(--space-m) 0;
+  background-color: var(--color-lighter);
+}
+.box .description {
+  padding-bottom: var(--space-m);
+  font-size: var(--font-l);
+}
+
 .card .header {
   padding: var(--space-s) var(--space-s) var(--space-xs) var(--space-s);
 }
@@ -262,13 +289,43 @@ h1 b {
   padding: var(--space-s);
 }
 
+/* LETTER-COUNT */
+
+.letter-count .card {
+  background-color: var(--color-green-lighter);
+  color: var(--color-green-dark);
+}
+
+.letter-count .card .header {
+  background-color: var(--color-green-dark);
+  color: var(--color-green-light);
+  display: grid;
+  grid-template-columns:
+    1fr
+    1fr;
+  font-size: var(--font-l);
+  font-weight: bold;
+}
+.letter-count .letter {
+  color: var(--color-lighter);
+  text-align: right;
+  margin-right: var(--space-s);
+}
+.letter-count .amount {
+  margin-left: var(--space-s);
+}
+
+.letter-count .content {
+  text-align: center;
+}
+
 /* EP-CHAR-ORIGINS */
 
 .ep-char-origins .card {
-  --color-dark: var(--color-green-dark);
   background-color: var(--color-green-lighter);
-  color: var(--color-dark);
+  color: var(--color-green-dark);
 }
+
 .ep-char-origins .card .header {
   background-color: var(--color-green-light);
 }
