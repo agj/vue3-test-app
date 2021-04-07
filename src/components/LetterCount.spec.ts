@@ -8,7 +8,9 @@ describe("LetterCount", () => {
     const description = "veces en nombres de lugares";
 
     const wrapper = mount(LetterCount, {
-      props: { letter, amount },
+      props: {
+        data: { letter, amount },
+      },
       slots: {
         default: description,
       },

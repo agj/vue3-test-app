@@ -11,20 +11,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+type Data = { letter: string; amount: number };
 
 export default {
   props: {
-    letter: {
-      type: String,
-      required: true,
-    },
-    amount: {
-      type: Number,
-      required: true,
+    data: {
+      type: Object as () => Data,
     },
   },
-  setup() {},
+  setup({ data }) {
+    return {
+      letter: data?.letter ?? "…",
+      amount: data?.amount.toString() ?? "…",
+    };
+  },
 };
 </script>
 
