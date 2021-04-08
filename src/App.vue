@@ -73,18 +73,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-
 import LetterCount from "./components/LetterCount.vue";
 import EpCharOrigins from "./components/EpCharOrigins.vue";
 
-export default defineComponent({
-  name: "App",
+export default {
   components: {
     LetterCount,
     EpCharOrigins,
   },
-});
+};
 </script>
 
 <style>
