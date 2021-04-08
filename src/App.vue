@@ -98,7 +98,6 @@ export default {
       locationsLetterCount.value = { letter: "L", amount: num };
     });
     countEpisodesWithLetter("E").then((num) => {
-      console.log("countEpisodesWithLetter", num);
       episodesLetterCount.value = { letter: "E", amount: num };
     });
     countCharactersWithLetter("C").then((num) => {
