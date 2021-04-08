@@ -20,4 +20,17 @@ describe("LetterCount", () => {
     expect(wrapper.find(".amount").text()).toEqual(amount.toString());
     expect(wrapper.find(".content").text()).toEqual(description);
   });
+
+  it("muestra un contenido predeterminado si no hay datos.", async () => {
+    const description = "veces en nombres de lugares";
+
+    const wrapper = mount(LetterCount, {
+      slots: {
+        default: description,
+      },
+    });
+
+    expect(wrapper.find(".letter").text()).toEqual("…");
+    expect(wrapper.find(".amount").text()).toEqual("…");
+  });
 });
