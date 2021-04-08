@@ -6,13 +6,13 @@
         ¿Cuántas veces se repiten letras en nombres?
       </div>
       <div class="items rows-3">
-        <LetterCount :data="{ letter: 'L', amount: 65 }">
+        <LetterCount class="in-locations" :data="locationsLetterCount">
           veces en nombres de lugares
         </LetterCount>
-        <LetterCount :data="{ letter: 'E', amount: 18 }">
+        <LetterCount class="in-episodes" :data="episodesLetterCount">
           veces en títulos de capítulos
         </LetterCount>
-        <LetterCount :data="{ letter: 'C', amount: 12 }">
+        <LetterCount class="in-characters" :data="charactersLetterCount">
           veces en nombres de personajes
         </LetterCount>
       </div>
@@ -73,6 +73,14 @@
 </template>
 
 <script lang="ts">
+import { ref, reactive } from "vue";
+import {
+  countLocationsWithLetter,
+  countEpisodesWithLetter,
+  countCharactersWithLetter,
+} from "./retrieve-data";
+import { LetterCountData } from "./components/types";
+
 import LetterCount from "./components/LetterCount.vue";
 import EpCharOrigins from "./components/EpCharOrigins.vue";
 
@@ -80,6 +88,28 @@ export default {
   components: {
     LetterCount,
     EpCharOrigins,
+  },
+  setup() {
+    const locationsLetterCount = ref<LetterCountData | undefined>();
+    const episodesLetterCount = ref<LetterCountData | undefined>();
+    const charactersLetterCount = ref<LetterCountData | undefined>();
+
+    countLocationsWithLetter("L").then((num) => {
+      locationsLetterCount.value = { letter: "L", amount: num };
+    });
+    countEpisodesWithLetter("E").then((num) => {
+      console.log("countEpisodesWithLetter", num);
+      episodesLetterCount.value = { letter: "E", amount: num };
+    });
+    countCharactersWithLetter("C").then((num) => {
+      charactersLetterCount.value = { letter: "C", amount: num };
+    });
+
+    return {
+      locationsLetterCount,
+      episodesLetterCount,
+      charactersLetterCount,
+    };
   },
 };
 </script>
