@@ -6,13 +6,13 @@
         ¿Cuántas veces se repiten letras en nombres?
       </div>
       <div class="items rows-3">
-        <LetterCount letter="L" :amount="65">
+        <LetterCount :data="{ letter: 'L', amount: 65 }">
           veces en nombres de lugares
         </LetterCount>
-        <LetterCount letter="E" :amount="189">
+        <LetterCount :data="{ letter: 'E', amount: 18 }">
           veces en títulos de capítulos
         </LetterCount>
-        <LetterCount letter="C" :amount="12">
+        <LetterCount :data="{ letter: 'C', amount: 12 }">
           veces en nombres de personajes
         </LetterCount>
       </div>
@@ -22,159 +22,51 @@
         ¿De dónde vienen los personajes que aparecen en cada capítulo?
       </div>
       <div class="items rows-4">
-        <section class="card">
-          <div class="header">
-            <div class="location-amount">6</div>
-            <div class="episode-title">Pilot</div>
-            <div class="episode-number">T01E01</div>
-          </div>
-          <div class="content">
-            <ul class="locations">
-              <li>Earth</li>
-              <li>Mars</li>
-              <li>Jupiter</li>
-              <li>Earth</li>
-              <li>Mars</li>
-              <li>Jupiter</li>
-            </ul>
-          </div>
-        </section>
-        <section class="card">
-          <div class="header">
-            <div class="location-amount">6</div>
-            <div class="episode-title">Pilot</div>
-            <div class="episode-number">T01E01</div>
-          </div>
-          <div class="content">
-            <ul class="locations">
-              <li>Earth</li>
-              <li>Mars</li>
-              <li>Jupiter</li>
-              <li>Earth</li>
-              <li>Mars</li>
-              <li>Jupiter</li>
-            </ul>
-          </div>
-        </section>
-        <section class="card">
-          <div class="header">
-            <div class="location-amount">6</div>
-            <div class="episode-title">Pilot</div>
-            <div class="episode-number">T01E01</div>
-          </div>
-          <div class="content">
-            <ul class="locations">
-              <li>Earth</li>
-              <li>Mars</li>
-              <li>Jupiter</li>
-              <li>Earth</li>
-              <li>Mars</li>
-              <li>Jupiter</li>
-            </ul>
-          </div>
-        </section>
-        <section class="card">
-          <div class="header">
-            <div class="location-amount">6</div>
-            <div class="episode-title">Pilot</div>
-            <div class="episode-number">T01E01</div>
-          </div>
-          <div class="content">
-            <ul class="locations">
-              <li>Earth</li>
-              <li>Mars</li>
-              <li>Jupiter</li>
-              <li>Earth</li>
-              <li>Mars</li>
-              <li>Jupiter</li>
-            </ul>
-          </div>
-        </section>
-        <section class="card">
-          <div class="header">
-            <div class="location-amount">6</div>
-            <div class="episode-title">Pilot</div>
-            <div class="episode-number">T01E01</div>
-          </div>
-          <div class="content">
-            <ul class="locations">
-              <li>Earth</li>
-              <li>Mars</li>
-              <li>Jupiter</li>
-              <li>Earth</li>
-              <li>Mars</li>
-              <li>Jupiter</li>
-            </ul>
-          </div>
-        </section>
-        <section class="card">
-          <div class="header">
-            <div class="location-amount">6</div>
-            <div class="episode-title">Pilot</div>
-            <div class="episode-number">T01E01</div>
-          </div>
-          <div class="content">
-            <ul class="locations">
-              <li>Earth</li>
-              <li>Mars</li>
-              <li>Jupiter</li>
-              <li>Earth</li>
-              <li>Mars</li>
-              <li>Jupiter</li>
-            </ul>
-          </div>
-        </section>
-        <section class="card">
-          <div class="header">
-            <div class="location-amount">6</div>
-            <div class="episode-title">Pilot</div>
-            <div class="episode-number">T01E01</div>
-          </div>
-          <div class="content">
-            <ul class="locations">
-              <li>Earth</li>
-              <li>Mars</li>
-              <li>Jupiter</li>
-              <li>Earth</li>
-              <li>Mars</li>
-              <li>Jupiter</li>
-            </ul>
-          </div>
-        </section>
-        <section class="card">
-          <div class="header">
-            <div class="location-amount">6</div>
-            <div class="episode-title">Pilot</div>
-            <div class="episode-number">T01E01</div>
-          </div>
-          <div class="content">
-            <ul class="locations">
-              <li>Earth</li>
-              <li>Mars</li>
-              <li>Jupiter</li>
-              <li>Earth</li>
-              <li>Mars</li>
-              <li>Jupiter</li>
-            </ul>
-          </div>
-        </section>
-        <section class="card">
-          <div class="header">
-            <div class="location-amount">6</div>
-            <div class="episode-title">Pilot</div>
-            <div class="episode-number">T01E01</div>
-          </div>
-          <div class="content">
-            <ul class="locations">
-              <li>Earth</li>
-              <li>Mars</li>
-              <li>Jupiter</li>
-              <li>Earth</li>
-              <li>Mars</li>
-              <li>Jupiter</li>
-            </ul>
-          </div>
-        </section>
+        <EpCharOrigins
+          episode-title="Pilot"
+          episode-number="T01E01"
+          :origins="['Tierra', 'Urano', 'Saturno', 'Júpiter', 'Venus', 'Marte']"
+        ></EpCharOrigins>
+        <EpCharOrigins
+          episode-title="Pilot"
+          episode-number="T01E01"
+          :origins="['Tierra', 'Urano', 'Saturno', 'Júpiter', 'Venus', 'Marte']"
+        ></EpCharOrigins>
+        <EpCharOrigins
+          episode-title="Pilot"
+          episode-number="T01E01"
+          :origins="['Tierra', 'Urano', 'Saturno', 'Júpiter', 'Venus', 'Marte']"
+        ></EpCharOrigins>
+        <EpCharOrigins
+          episode-title="Pilot"
+          episode-number="T01E01"
+          :origins="['Tierra', 'Urano', 'Saturno', 'Júpiter', 'Venus', 'Marte']"
+        ></EpCharOrigins>
+        <EpCharOrigins
+          episode-title="Pilot"
+          episode-number="T01E01"
+          :origins="['Tierra', 'Urano', 'Saturno', 'Júpiter', 'Venus', 'Marte']"
+        ></EpCharOrigins>
+        <EpCharOrigins
+          episode-title="Pilot"
+          episode-number="T01E01"
+          :origins="['Tierra', 'Urano', 'Saturno', 'Júpiter', 'Venus', 'Marte']"
+        ></EpCharOrigins>
+        <EpCharOrigins
+          episode-title="Pilot"
+          episode-number="T01E01"
+          :origins="['Tierra', 'Urano', 'Saturno', 'Júpiter', 'Venus', 'Marte']"
+        ></EpCharOrigins>
+        <EpCharOrigins
+          episode-title="Pilot"
+          episode-number="T01E01"
+          :origins="['Tierra', 'Urano', 'Saturno', 'Júpiter', 'Venus', 'Marte']"
+        ></EpCharOrigins>
+        <EpCharOrigins
+          episode-title="Pilot"
+          episode-number="T01E01"
+          :origins="['Tierra', 'Urano', 'Saturno', 'Júpiter', 'Venus', 'Marte']"
+        ></EpCharOrigins>
       </div>
     </section>
   </article>
@@ -184,11 +76,13 @@
 import { defineComponent } from "vue";
 
 import LetterCount from "./components/LetterCount.vue";
+import EpCharOrigins from "./components/EpCharOrigins.vue";
 
 export default defineComponent({
   name: "App",
   components: {
     LetterCount,
+    EpCharOrigins,
   },
 });
 </script>
