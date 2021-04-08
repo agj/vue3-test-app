@@ -1,8 +1,8 @@
 <template>
   <section class="card">
     <div class="header">
-      <div class="letter">{{ letter }}</div>
-      <div class="amount">{{ amount }}</div>
+      <div class="letter">{{ data?.letter ?? "…" }}</div>
+      <div class="amount">{{ data?.amount ?? "…" }}</div>
     </div>
     <div class="content">
       <slot></slot>
@@ -11,19 +11,13 @@
 </template>
 
 <script lang="ts">
-type Data = { letter: string; amount: number };
+import { LetterCountData as Data } from "./types";
 
 export default {
   props: {
     data: {
       type: Object as () => Data,
     },
-  },
-  setup(props: { data?: Data }) {
-    return {
-      letter: props.data?.letter ?? "…",
-      amount: props.data?.amount.toString() ?? "…",
-    };
   },
 };
 </script>
