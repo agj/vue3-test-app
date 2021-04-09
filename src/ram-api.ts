@@ -83,11 +83,7 @@ export const getEpisode = async (
 ): Promise<
   RamResponse<RamEpisode> | Array<RamEpisode> | RamEpisode | RamError
 > => {
-  const fixedOpts =
-    typeof opts === "object" && !Array.isArray(opts)
-      ? toStringValues(opts)
-      : opts;
-  return get("episode", fixedOpts);
+  return get("episode", fixOpts(opts));
 };
 
 export const getLocation = async (
@@ -95,7 +91,7 @@ export const getLocation = async (
 ): Promise<
   RamResponse<RamLocation> | Array<RamLocation> | RamLocation | RamError
 > => {
-  return [];
+  return get("location", fixOpts(opts));
 };
 
 export const getCharacter = async (
@@ -103,7 +99,7 @@ export const getCharacter = async (
 ): Promise<
   RamResponse<RamCharacter> | Array<RamCharacter> | RamCharacter | RamError
 > => {
-  return [];
+  return get("character", fixOpts(opts));
 };
 
 export default {
@@ -133,9 +129,15 @@ const get = async (
   const response = await fetch(
     `https://rickandmortyapi.com/api/${type}/${id}?${params}`
   );
-  console.log("GET", type, opts, await response.json());
-  return response.json();
+  const data = await response.json();
+  console.log("GET", type, opts, data);
+  return data;
 };
+
+const fixOpts = (opts: any) =>
+  typeof opts === "object" && !Array.isArray(opts)
+    ? toStringValues(opts)
+    : opts;
 
 const toStringValues = (obj: any) =>
   (map((v: any) => v?.toString() ?? "", obj) as unknown) as Record<
