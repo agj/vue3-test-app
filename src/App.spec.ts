@@ -34,4 +34,27 @@ describe("App", () => {
     expect(wrapper.find(".in-characters .letter").text()).toEqual("C");
     expect(wrapper.find(".in-characters .amount").text()).toEqual("15");
   });
+
+  it("despliega una lista de episodios con los orígenes de sus personajes.", async () => {
+    const wrapper = await mountWait(App);
+
+    expect(
+      wrapper.findAll(".ep-char-origins .items > *").map((el) => ({
+        title: el.find(".episode-title").text(),
+        number: el.find(".episode-number").text(),
+        origins: el.findAll(".locations > *").map((l) => l.text()),
+      }))
+    ).toEqual([
+      {
+        title: "Lawnmower Dog",
+        number: "T1 E2",
+        origins: ["Jupiter", "Uranus", "Mars"],
+      },
+      {
+        title: "Anatomy Park",
+        number: "T1 E3",
+        origins: ["Uranus", "Mars", "Pluto", "Andromeda", "Chiloé"],
+      },
+    ]);
+  });
 });
