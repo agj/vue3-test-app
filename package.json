@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "ramda": "^0.27.1",
-    "rickmortyapi": "^0.3.0",
     "vue": "^3.0.5"
   },
   "devDependencies": {
