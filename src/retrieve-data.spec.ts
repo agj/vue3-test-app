@@ -29,17 +29,17 @@ describe("getCharacterOriginsPerEpisode", () => {
     expect(await getCharacterOriginsPerEpisode()).toEqual([
       {
         title: "Pilot",
-        number: "T01E01",
+        number: { season: 1, episode: 1 },
         origins: ["Earth", "Jupiter", "Uranus"],
       },
       {
         title: "Lawnmower Dog",
-        number: "T01E02",
+        number: { season: 1, episode: 2 },
         origins: ["Jupiter", "Uranus", "Mars"],
       },
       {
         title: "Anatomy Park",
-        number: "T01E03",
+        number: { season: 1, episode: 3 },
         origins: ["Uranus", "Mars", "Pluto", "Andromeda", "Chiloé"],
       },
     ]);

@@ -23,49 +23,10 @@
       </div>
       <div class="items rows-4">
         <EpCharOrigins
-          episode-title="Pilot"
-          episode-number="T01E01"
-          :origins="['Tierra', 'Urano', 'Saturno', 'Júpiter', 'Venus', 'Marte']"
-        ></EpCharOrigins>
-        <EpCharOrigins
-          episode-title="Pilot"
-          episode-number="T01E01"
-          :origins="['Tierra', 'Urano', 'Saturno', 'Júpiter', 'Venus', 'Marte']"
-        ></EpCharOrigins>
-        <EpCharOrigins
-          episode-title="Pilot"
-          episode-number="T01E01"
-          :origins="['Tierra', 'Urano', 'Saturno', 'Júpiter', 'Venus', 'Marte']"
-        ></EpCharOrigins>
-        <EpCharOrigins
-          episode-title="Pilot"
-          episode-number="T01E01"
-          :origins="['Tierra', 'Urano', 'Saturno', 'Júpiter', 'Venus', 'Marte']"
-        ></EpCharOrigins>
-        <EpCharOrigins
-          episode-title="Pilot"
-          episode-number="T01E01"
-          :origins="['Tierra', 'Urano', 'Saturno', 'Júpiter', 'Venus', 'Marte']"
-        ></EpCharOrigins>
-        <EpCharOrigins
-          episode-title="Pilot"
-          episode-number="T01E01"
-          :origins="['Tierra', 'Urano', 'Saturno', 'Júpiter', 'Venus', 'Marte']"
-        ></EpCharOrigins>
-        <EpCharOrigins
-          episode-title="Pilot"
-          episode-number="T01E01"
-          :origins="['Tierra', 'Urano', 'Saturno', 'Júpiter', 'Venus', 'Marte']"
-        ></EpCharOrigins>
-        <EpCharOrigins
-          episode-title="Pilot"
-          episode-number="T01E01"
-          :origins="['Tierra', 'Urano', 'Saturno', 'Júpiter', 'Venus', 'Marte']"
-        ></EpCharOrigins>
-        <EpCharOrigins
-          episode-title="Pilot"
-          episode-number="T01E01"
-          :origins="['Tierra', 'Urano', 'Saturno', 'Júpiter', 'Venus', 'Marte']"
+          v-for="ep in epCharOrigins"
+          :episode-title="ep.title"
+          :episode-number="`T${ep.number.season}E${ep.number.episode}`"
+          :origins="ep.origins"
         ></EpCharOrigins>
       </div>
     </section>
@@ -78,8 +39,9 @@ import {
   countLocationsWithLetter,
   countEpisodesWithLetter,
   countCharactersWithLetter,
+  getCharacterOriginsPerEpisode,
 } from "./retrieve-data";
-import { LetterCountData } from "./components/types";
+import { LetterCountData, EpisodeWithOrigins } from "./components/types";
 
 import LetterCount from "./components/LetterCount.vue";
 import EpCharOrigins from "./components/EpCharOrigins.vue";
@@ -104,10 +66,17 @@ export default {
       charactersLetterCount.value = { letter: "C", amount: num };
     });
 
+    const epCharOrigins = ref<Array<EpisodeWithOrigins>>();
+
+    getCharacterOriginsPerEpisode().then((eps) => {
+      epCharOrigins.value = eps;
+    });
+
     return {
       locationsLetterCount,
       episodesLetterCount,
       charactersLetterCount,
+      epCharOrigins,
     };
   },
 };
