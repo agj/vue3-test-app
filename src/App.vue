@@ -167,43 +167,4 @@ h1 b {
 .card .content {
   padding: var(--space-s);
 }
-
-/* EP-CHAR-ORIGINS */
-
-.ep-char-origins .card {
-  background-color: var(--color-green-lighter);
-  color: var(--color-green-dark);
-}
-
-.ep-char-origins .card .header {
-  background-color: var(--color-green-light);
-}
-.ep-char-origins .episode-title {
-  font-weight: bold;
-}
-.ep-char-origins .episode-number {
-  font-size: var(--font-s);
-}
-.ep-char-origins .location-amount {
-  border-radius: 1rem;
-  background-color: var(--color-green-lighter);
-  width: 2rem;
-  height: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  float: right;
-}
-.ep-char-origins .card ul {
-  display: flex;
-  flex-wrap: wrap;
-}
-.ep-char-origins .card li {
-  list-style: none;
-  display: block;
-  margin-right: var(--space-s);
-}
-.ep-char-origins .card li:last-child {
-  margin-right: 0;
-}
 </style>

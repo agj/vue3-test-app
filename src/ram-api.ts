@@ -130,7 +130,6 @@ const get = async (
     `https://rickandmortyapi.com/api/${type}/${id}?${params}`
   );
   const data = await response.json();
-  console.log("GET", type, opts, data);
   return data;
 };
 
