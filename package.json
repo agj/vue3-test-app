@@ -1,6 +1,6 @@
 {
   "name": "vue3-test-app",
-  "homepage": "https://agj.github.io/vue3-test-app",
+  "homepage": "https://agj.github.io/vue3-test-app/",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -8,7 +8,7 @@
     "serve": "vite preview",
     "test": "jest src",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "ramda": "^0.27.1",

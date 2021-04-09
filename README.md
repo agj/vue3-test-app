@@ -1,6 +1,8 @@
 
 Este es un ejercicio programado por Ale Grilli. Carga y muestra ciertos datos de [Rick and Morty API][ram-api].
 
+Se puede ver aquí: https://agj.github.io/vue3-test-app/
+
 
 ## Tecnologías usadas:
 
