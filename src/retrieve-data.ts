@@ -7,7 +7,7 @@ import {
   RamLocation,
   RamResponse,
   Url,
-} from "rickmortyapi";
+} from "./ram-api";
 import { flatten, uniq } from "ramda";
 import { EpisodeNumber, EpisodeWithOrigins } from "./components/types";
 

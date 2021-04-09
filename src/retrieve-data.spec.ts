@@ -5,10 +5,10 @@ import {
   getCharacterOriginsPerEpisode,
 } from "./retrieve-data";
 import "./retrieve-data.ts";
-import rick_ from "rickmortyapi";
+import rick_ from "./ram-api";
 import { mocked } from "ts-jest/utils";
 
-jest.mock("rickmortyapi");
+jest.mock("./ram-api");
 
 const rick = mocked(rick_, true);
 
