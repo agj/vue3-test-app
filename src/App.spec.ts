@@ -57,4 +57,11 @@ describe("App", () => {
       },
     ]);
   });
+
+  it("despliega el tiempo que se demoró en recibir datos.", async () => {
+    const wrapper = await mountWait(App);
+
+    expect(wrapper.find(".letter-count .elapsed").text()).toMatch(/\d+ ms/);
+    expect(wrapper.find(".ep-char-origins .elapsed").text()).toMatch(/\d+ ms/);
+  });
 });

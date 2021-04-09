@@ -16,6 +16,12 @@
           veces en nombres de personajes
         </LetterCount>
       </div>
+      <div class="extra">
+        Tiempo de respuesta:
+        <span class="elapsed">{{
+          letterCountElapsed ? letterCountElapsed + " ms" : "…"
+        }}</span>
+      </div>
     </section>
     <section class="ep-char-origins box">
       <div class="description">
@@ -26,6 +32,12 @@
           v-for="ep in epCharOrigins"
           :episode="ep"
         ></EpCharOrigins>
+      </div>
+      <div class="extra">
+        Tiempo de respuesta:
+        <span class="elapsed">{{
+          epCharOriginsElapsed ? epCharOriginsElapsed + " ms" : "…"
+        }}</span>
       </div>
     </section>
   </article>
@@ -53,28 +65,48 @@ export default {
     const locationsLetterCount = ref<LetterCountData | undefined>();
     const episodesLetterCount = ref<LetterCountData | undefined>();
     const charactersLetterCount = ref<LetterCountData | undefined>();
+    const letterCountElapsed = ref<number | undefined>();
+
+    const letterCountStart = Date.now();
+    const checkLetterCountElapsed = () => {
+      if (
+        locationsLetterCount.value &&
+        episodesLetterCount.value &&
+        charactersLetterCount.value
+      ) {
+        letterCountElapsed.value = Date.now() - letterCountStart;
+      }
+    };
 
     countLocationsWithLetter("L").then((num) => {
       locationsLetterCount.value = { letter: "L", amount: num };
+      checkLetterCountElapsed();
     });
     countEpisodesWithLetter("E").then((num) => {
       episodesLetterCount.value = { letter: "E", amount: num };
+      checkLetterCountElapsed();
     });
     countCharactersWithLetter("C").then((num) => {
       charactersLetterCount.value = { letter: "C", amount: num };
+      checkLetterCountElapsed();
     });
 
     const epCharOrigins = ref<Array<EpisodeWithOrigins>>();
+    const epCharOriginsElapsed = ref<number | undefined>();
 
+    const epCharOriginsStart = Date.now();
     getCharacterOriginsPerEpisode().then((eps) => {
       epCharOrigins.value = eps;
+      epCharOriginsElapsed.value = Date.now() - epCharOriginsStart;
     });
 
     return {
       locationsLetterCount,
       episodesLetterCount,
       charactersLetterCount,
+      letterCountElapsed,
       epCharOrigins,
+      epCharOriginsElapsed,
     };
   },
 };
@@ -84,6 +116,7 @@ export default {
 :root {
   --color-light: hsl(0, 0%, 95%);
   --color-lighter: hsl(0, 0%, 98%);
+  --color-medium: hsl(0, 0%, 71.4%);
   --color-green-dark: hsl(126.4, 9.6%, 42.3%);
   --color-green: hsl(126.4, 43.3%, 64.7%);
   --color-green-light: hsl(126.4, 49.3%, 83.7%);
@@ -166,5 +199,12 @@ h1 b {
 }
 .card .content {
   padding: var(--space-s);
+}
+
+.extra {
+  font-size: var(--font-s);
+  padding-top: var(--space-s);
+  color: var(--color-medium);
+  text-align: center;
 }
 </style>

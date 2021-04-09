@@ -29,8 +29,6 @@ export default {
 </script>
 
 <style>
-/* EP-CHAR-ORIGINS */
-
 .ep-char-origins .card {
   background-color: var(--color-green-lighter);
   color: var(--color-green-dark);
@@ -56,15 +54,12 @@ export default {
   float: right;
 }
 .ep-char-origins .card ul {
-  display: flex;
-  flex-wrap: wrap;
+  /* display: flex;
+  flex-wrap: wrap; */
 }
 .ep-char-origins .card li {
   list-style: none;
-  display: block;
-  margin-right: var(--space-s);
-}
-.ep-char-origins .card li:last-child {
-  margin-right: 0;
+  margin-left: var(--space-m);
+  text-indent: calc(var(--space-m) * -1);
 }
 </style>
