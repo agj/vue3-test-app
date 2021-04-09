@@ -24,9 +24,7 @@
       <div class="items rows-4">
         <EpCharOrigins
           v-for="ep in epCharOrigins"
-          :episode-title="ep.title"
-          :episode-number="`T${ep.number.season}E${ep.number.episode}`"
-          :origins="ep.origins"
+          :episode="ep"
         ></EpCharOrigins>
       </div>
     </section>
