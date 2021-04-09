@@ -8,10 +8,13 @@
     "test": "jest src"
   },
   "dependencies": {
+    "ramda": "^0.27.1",
+    "rickmortyapi": "^0.3.0",
     "vue": "^3.0.5"
   },
   "devDependencies": {
     "@types/jest": "^26.0.22",
+    "@types/ramda": "^0.27.40",
     "@vitejs/plugin-vue": "^1.2.1",
     "@vue/compiler-sfc": "^3.0.5",
     "@vue/test-utils": "^2.0.0-rc.4",
