@@ -1,3 +1,5 @@
+import { map } from "ramda";
+
 export type RamResponse<T> = {
   info: {
     count: number;
@@ -81,8 +83,13 @@ export const getEpisode = async (
 ): Promise<
   RamResponse<RamEpisode> | Array<RamEpisode> | RamEpisode | RamError
 > => {
-  return [];
+  const fixedOpts =
+    typeof opts === "object" && !Array.isArray(opts)
+      ? toStringValues(opts)
+      : opts;
+  return get("episode", fixedOpts);
 };
+
 export const getLocation = async (
   opts?: number | Array<number> | RamLocationFilter
 ): Promise<
@@ -90,6 +97,7 @@ export const getLocation = async (
 > => {
   return [];
 };
+
 export const getCharacter = async (
   opts?: number | Array<number> | RamCharacterFilter
 ): Promise<
@@ -103,3 +111,34 @@ export default {
   getLocation,
   getCharacter,
 };
+
+// INTERNAL
+
+type GetType = "episode" | "character" | "location";
+
+const get = async (
+  type: GetType,
+  opts?: Record<string, string> | number | Array<number>
+) => {
+  const id =
+    typeof opts === "number"
+      ? opts.toString()
+      : Array.isArray(opts)
+      ? opts.join(",")
+      : "";
+  const params =
+    typeof opts === "object" && !Array.isArray(opts)
+      ? new URLSearchParams(opts).toString()
+      : "";
+  const response = await fetch(
+    `https://rickandmortyapi.com/api/${type}/${id}?${params}`
+  );
+  console.log("GET", type, opts, await response.json());
+  return response.json();
+};
+
+const toStringValues = (obj: any) =>
+  (map((v: any) => v?.toString() ?? "", obj) as unknown) as Record<
+    string,
+    string
+  >;
