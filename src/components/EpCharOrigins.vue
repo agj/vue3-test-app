@@ -1,15 +1,15 @@
 <template>
   <section class="card">
     <div class="header">
-      <div class="location-amount">{{ episode.origins.length }}</div>
-      <div class="episode-title">{{ episode.title }}</div>
+      <div class="location-amount">{{ episode?.origins.length }}</div>
+      <div class="episode-title">{{ episode?.title }}</div>
       <div class="episode-number">
-        T{{ episode.number.season }} E{{ episode.number.episode }}
+        T{{ episode?.number.season }} E{{ episode?.number.episode }}
       </div>
     </div>
     <div class="content">
       <ul class="locations">
-        <li v-for="origin in episode.origins">{{ origin }}</li>
+        <li v-for="origin in episode?.origins">{{ origin }}</li>
       </ul>
     </div>
   </section>
@@ -52,10 +52,6 @@ export default {
   justify-content: center;
   align-items: center;
   float: right;
-}
-.ep-char-origins .card ul {
-  /* display: flex;
-  flex-wrap: wrap; */
 }
 .ep-char-origins .card li {
   list-style: none;
