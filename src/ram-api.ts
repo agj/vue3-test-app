@@ -78,6 +78,32 @@ export type RamError = {
   error: string;
 };
 
+export const getAllEpisodes = async () => get2("episode", "all");
+
+export const getEpisodesById = async (ids: Array<number>) =>
+  get2("episode", ids);
+
+export const getEpisodesByFilter = async (filter: RamEpisodeFilter) =>
+  get2("episode", filter);
+
+export const getAllLocations = async () => get2("location", "all");
+
+export const getLocationsById = async (ids: Array<number>) =>
+  get2("location", ids);
+
+export const getLocationsByFilter = async (filter: RamLocationFilter) =>
+  get2("location", filter);
+
+export const getAllCharacters = async () => get2("character", "all");
+
+export const getCharactersById = async (ids: Array<number>) =>
+  get2("character", ids);
+
+export const getCharactersByFilter = async (filter: RamCharacterFilter) =>
+  get2("character", filter);
+
+// Old
+
 export const getEpisode = async (
   opts?: number | Array<number> | RamEpisodeFilter
 ): Promise<
@@ -111,6 +137,27 @@ export default {
 // INTERNAL
 
 type GetType = "episode" | "character" | "location";
+
+const get2 = async (
+  type: GetType,
+  opts?:
+    | RamEpisodeFilter
+    | RamLocationFilter
+    | RamCharacterFilter
+    | Array<number>
+    | "all"
+) => {
+  const id = Array.isArray(opts) ? opts.join(",") : "";
+  const params =
+    opts !== "all" && !Array.isArray(opts)
+      ? new URLSearchParams(fixOpts(opts)).toString()
+      : "";
+  const response = await fetch(
+    `https://rickandmortyapi.com/api/${type}/${id}?${params}`
+  );
+  const data = await response.json();
+  return data;
+};
 
 const get = async (
   type: GetType,
