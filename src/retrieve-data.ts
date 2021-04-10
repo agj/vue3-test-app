@@ -1,35 +1,34 @@
 import {
-  getCharacter,
-  getEpisode,
-  getLocation,
+  getAllEpisodes,
+  getCharactersByFilter,
+  getCharactersById,
+  getEpisodesByFilter,
+  getLocationsByFilter,
   RamCharacter,
-  RamEpisode,
-  RamLocation,
-  RamResponse,
   Url,
 } from "./ram-api";
 import { flatten, uniq } from "ramda";
 import { EpisodeNumber, EpisodeWithOrigins } from "./components/types";
 
-export const countLocationsWithLetter = async (
+export const countLetterInLocations = async (
   letter: string
 ): Promise<number> => {
-  const response = await getLocation({ name: letter });
-  return (response as RamResponse<RamLocation>).info?.count ?? 0;
+  const locations = await getLocationsByFilter({ name: letter });
+  return countLetters(letter, locations);
 };
 
-export const countEpisodesWithLetter = async (
+export const countLetterInEpisodes = async (
   letter: string
 ): Promise<number> => {
-  const response = await getEpisode({ name: letter });
-  return (response as RamResponse<RamEpisode>).info?.count ?? 0;
+  const episodes = await getEpisodesByFilter({ name: letter });
+  return countLetters(letter, episodes);
 };
 
-export const countCharactersWithLetter = async (
+export const countLetterInCharacters = async (
   letter: string
 ): Promise<number> => {
-  const response = await getCharacter({ name: letter });
-  return (response as RamResponse<RamCharacter>).info?.count ?? 0;
+  const characters = await getCharactersByFilter({ name: letter });
+  return countLetters(letter, characters);
 };
 
 export const getCharacterOriginsPerEpisode = async (): Promise<
@@ -39,7 +38,7 @@ export const getCharacterOriginsPerEpisode = async (): Promise<
   const characterIds = uniq(
     flatten(episodes.map((ep) => ep.characters.map(idFromUrl)))
   );
-  const characters = (await getCharacter(characterIds)) as Array<RamCharacter>;
+  const characters = await getCharactersById(characterIds);
 
   const result = episodes.map((ep) => ({
     title: ep.name,
@@ -52,17 +51,12 @@ export const getCharacterOriginsPerEpisode = async (): Promise<
 
 // INTERNAL
 
-const getAllEpisodes = async () => {
-  let episodes: Array<RamEpisode> = [];
-  let page = 1;
-  while (true) {
-    const response = (await getEpisode({ page })) as RamResponse<RamEpisode>;
-    episodes = episodes.concat(response.results);
-    ++page;
-    if (!response.info.next) break;
-  }
-  return episodes;
-};
+const countLetters = (letter: string, list: Array<{ name: string }>): number =>
+  list.reduce((acc, { name }) => {
+    const countName =
+      name.length - name.toLowerCase().replaceAll(letter, "").length;
+    return acc + countName;
+  }, 0);
 
 const idFromUrl = (url: string) => {
   const n = url.match(/\/(\d+)$/) ?? [];

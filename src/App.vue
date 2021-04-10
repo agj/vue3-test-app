@@ -45,16 +45,16 @@
 
 <script lang="ts">
 import { ref, reactive } from "vue";
-import {
-  countLocationsWithLetter,
-  countEpisodesWithLetter,
-  countCharactersWithLetter,
-  getCharacterOriginsPerEpisode,
-} from "./retrieve-data";
 import { LetterCountData, EpisodeWithOrigins } from "./components/types";
 
 import LetterCount from "./components/LetterCount.vue";
 import EpCharOrigins from "./components/EpCharOrigins.vue";
+import {
+  countLetterInCharacters,
+  countLetterInEpisodes,
+  countLetterInLocations,
+  getCharacterOriginsPerEpisode,
+} from "./retrieve-data";
 
 export default {
   components: {
@@ -78,15 +78,15 @@ export default {
       }
     };
 
-    countLocationsWithLetter("L").then((num) => {
+    countLetterInLocations("L").then((num) => {
       locationsLetterCount.value = { letter: "L", amount: num };
       checkLetterCountElapsed();
     });
-    countEpisodesWithLetter("E").then((num) => {
+    countLetterInEpisodes("E").then((num) => {
       episodesLetterCount.value = { letter: "E", amount: num };
       checkLetterCountElapsed();
     });
-    countCharactersWithLetter("C").then((num) => {
+    countLetterInCharacters("C").then((num) => {
       charactersLetterCount.value = { letter: "C", amount: num };
       checkLetterCountElapsed();
     });
