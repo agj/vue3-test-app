@@ -51,12 +51,17 @@ export const getCharacterOriginsPerEpisode = async (): Promise<
 
 // INTERNAL
 
-const countLetters = (letter: string, list: Array<{ name: string }>): number =>
-  list.reduce((acc, { name }) => {
+const countLetters = (
+  letter: string,
+  list: Array<{ name: string }>
+): number => {
+  const letterNormalized = letter.toLowerCase();
+  return list.reduce((acc, { name }) => {
     const countName =
-      name.length - name.toLowerCase().replaceAll(letter, "").length;
+      name.length - name.toLowerCase().replaceAll(letterNormalized, "").length;
     return acc + countName;
   }, 0);
+};
 
 const idFromUrl = (url: string) => {
   const n = url.match(/\/(\d+)$/) ?? [];

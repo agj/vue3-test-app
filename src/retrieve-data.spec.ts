@@ -114,6 +114,11 @@ describe("countLetterInLocations", () => {
 
     expect(await countLetterInLocations("l")).toEqual(amount);
   });
+  it("responde igual con mayúscula.", async () => {
+    const amount = 2;
+
+    expect(await countLetterInLocations("L")).toEqual(amount);
+  });
 });
 
 describe("countLetterInEpisodes", () => {
@@ -122,6 +127,11 @@ describe("countLetterInEpisodes", () => {
 
     expect(await countLetterInEpisodes("e")).toEqual(amount);
   });
+  it("responde igual con mayúscula.", async () => {
+    const amount = 6;
+
+    expect(await countLetterInEpisodes("E")).toEqual(amount);
+  });
 });
 
 describe("countLetterInCharacters", () => {
@@ -129,6 +139,11 @@ describe("countLetterInCharacters", () => {
     const amount = 8;
 
     expect(await countLetterInCharacters("c")).toEqual(amount);
+  });
+  it("responde igual con mayúscula.", async () => {
+    const amount = 8;
+
+    expect(await countLetterInCharacters("C")).toEqual(amount);
   });
 });
 
