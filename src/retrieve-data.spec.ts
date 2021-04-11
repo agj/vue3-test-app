@@ -5,7 +5,14 @@ import {
   getCharacterOriginsPerEpisode,
 } from "./retrieve-data";
 import "./retrieve-data.ts";
-import rick_, { RamCharacter, RamEpisode, RamLocation } from "./ram-api";
+import rick_, {
+  RamCharacter,
+  RamCharacterFilter,
+  RamEpisode,
+  RamEpisodeFilter,
+  RamLocation,
+  RamLocationFilter,
+} from "./ram-api";
 import { mocked } from "ts-jest/utils";
 
 // UTILIDADES
@@ -55,6 +62,23 @@ const character = (
 
 const apiUrl = (rest: string) => "https://rickandmortyapi.com/api/" + rest;
 
+type Named = { name: string };
+function getByFilter<T>(list: Array<T>) {
+  return async (
+    filter: RamCharacterFilter | RamEpisodeFilter | RamLocationFilter
+  ): Promise<Array<T>> => {
+    const filterName = filter.name?.toLowerCase() ?? "";
+    return list.filter((obj) => {
+      const objName = ((obj as unknown) as Named).name.toLowerCase();
+      return objName.includes(filterName);
+    });
+  };
+}
+function getById<T>(list: Array<T>) {
+  return async (ids: Array<number>): Promise<Array<T>> =>
+    ids.map((id) => list[id - 1]);
+}
+
 // MOCKS
 
 jest.mock("./ram-api");
@@ -82,68 +106,47 @@ const characters = [
 rick.getAllLocations.mockResolvedValue(locations);
 rick.getAllEpisodes.mockResolvedValue(episodes);
 rick.getAllCharacters.mockResolvedValue(characters);
-rick.getLocationsById.mockImplementation(async (ids) =>
-  ids.map((id) => locations[id - 1])
-);
-rick.getEpisodesById.mockImplementation(async (ids) =>
-  ids.map((id) => episodes[id - 1])
-);
-rick.getCharactersById.mockImplementation(async (ids) =>
-  ids.map((id) => characters[id - 1])
-);
-rick.getLocationsByFilter.mockResolvedValue([locations[1], locations[2]]);
-rick.getEpisodesByFilter.mockResolvedValue([
-  episodes[0],
-  episodes[1],
-  episodes[2],
-]);
-rick.getCharactersByFilter.mockResolvedValue([
-  characters[0],
-  characters[1],
-  characters[2],
-  characters[3],
-]);
+rick.getLocationsById.mockImplementation(getById(locations));
+rick.getEpisodesById.mockImplementation(getById(episodes));
+rick.getCharactersById.mockImplementation(getById(characters));
+rick.getLocationsByFilter.mockImplementation(getByFilter(locations));
+rick.getEpisodesByFilter.mockImplementation(getByFilter(episodes));
+rick.getCharactersByFilter.mockImplementation(getByFilter(characters));
 
 // PRUEBAS
 
 // Cuenta letras
 
 describe("countLetterInLocations", () => {
-  it("responde con una cuenta de letras.", async () => {
-    const amount = 2;
+  const letterAmount = 3;
 
-    expect(await countLetterInLocations("l")).toEqual(amount);
+  it("responde con una cuenta de letras.", async () => {
+    expect(await countLetterInLocations("l")).toEqual(letterAmount);
   });
   it("responde igual con mayúscula.", async () => {
-    const amount = 2;
-
-    expect(await countLetterInLocations("L")).toEqual(amount);
+    expect(await countLetterInLocations("L")).toEqual(letterAmount);
   });
 });
 
 describe("countLetterInEpisodes", () => {
-  it("responde con una cuenta de letras.", async () => {
-    const amount = 6;
+  const letterAmount = 8;
 
-    expect(await countLetterInEpisodes("e")).toEqual(amount);
+  it("responde con una cuenta de letras.", async () => {
+    expect(await countLetterInEpisodes("e")).toEqual(letterAmount);
   });
   it("responde igual con mayúscula.", async () => {
-    const amount = 6;
-
-    expect(await countLetterInEpisodes("E")).toEqual(amount);
+    expect(await countLetterInEpisodes("E")).toEqual(letterAmount);
   });
 });
 
 describe("countLetterInCharacters", () => {
-  it("responde con una cuenta de letras.", async () => {
-    const amount = 8;
+  const letterAmount = 8;
 
-    expect(await countLetterInCharacters("c")).toEqual(amount);
+  it("responde con una cuenta de letras.", async () => {
+    expect(await countLetterInCharacters("c")).toEqual(letterAmount);
   });
   it("responde igual con mayúscula.", async () => {
-    const amount = 8;
-
-    expect(await countLetterInCharacters("C")).toEqual(amount);
+    expect(await countLetterInCharacters("C")).toEqual(letterAmount);
   });
 });
 
