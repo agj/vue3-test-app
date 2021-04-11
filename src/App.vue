@@ -126,10 +126,10 @@ export default {
   --space-s: 0.5rem;
   --space-xs: 0.2rem;
   --thickness-s: 0.01rem;
-  --font-xl: 28pt;
-  --font-l: 16pt;
-  --font-m: 13pt;
-  --font-s: 9pt;
+  --font-xl: 20pt;
+  --font-l: 13pt;
+  --font-m: 11pt;
+  --font-s: 8pt;
 
   font-size: var(--font-m);
   line-height: 1.3;
@@ -162,19 +162,12 @@ h1 b {
 
 .rows-3 {
   display: grid;
-  grid-template-columns:
-    1fr
-    1fr
-    1fr;
+  grid-template-columns: 1fr;
   gap: var(--space-xs);
 }
 .rows-4 {
   display: grid;
-  grid-template-columns:
-    1fr
-    1fr
-    1fr
-    1fr;
+  grid-template-columns: 1fr;
   gap: var(--space-xs);
 }
 
@@ -206,5 +199,34 @@ h1 b {
   padding-top: var(--space-s);
   color: var(--color-medium);
   text-align: center;
+}
+
+/* RESPONSIVIDAD */
+
+@media (min-width: 395px) {
+  .rows-3 {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .rows-4 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 525px) {
+  :root {
+    --font-xl: 28pt;
+    --font-l: 16pt;
+    --font-m: 13pt;
+    --font-s: 9pt;
+  }
+  .rows-4 {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media (min-width: 800px) {
+  .rows-4 {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
 }
 </style>
