@@ -50,18 +50,15 @@ export type RamCharacter = {
 };
 
 export type RamEpisodeFilter = {
-  page?: number;
   name?: string;
   episode?: string;
 };
 export type RamLocationFilter = {
-  page?: number;
   name?: string;
   type?: string;
   dimension?: string;
 };
 export type RamCharacterFilter = {
-  page?: number;
   name?: string;
   status?: RamCharacterStatus;
   species?: string;
@@ -78,59 +75,104 @@ export type RamError = {
   error: string;
 };
 
-export const getEpisode = async (
-  opts?: number | Array<number> | RamEpisodeFilter
-): Promise<
-  RamResponse<RamEpisode> | Array<RamEpisode> | RamEpisode | RamError
-> => {
-  return get("episode", fixOpts(opts));
-};
+// Capítulos
 
-export const getLocation = async (
-  opts?: number | Array<number> | RamLocationFilter
-): Promise<
-  RamResponse<RamLocation> | Array<RamLocation> | RamLocation | RamError
-> => {
-  return get("location", fixOpts(opts));
-};
+export const getAllEpisodes = async (): Promise<Array<RamEpisode>> =>
+  (get("episode", "all") as unknown) as Promise<Array<RamEpisode>>;
 
-export const getCharacter = async (
-  opts?: number | Array<number> | RamCharacterFilter
-): Promise<
-  RamResponse<RamCharacter> | Array<RamCharacter> | RamCharacter | RamError
-> => {
-  return get("character", fixOpts(opts));
-};
+export const getEpisodesById = async (
+  ids: Array<number>
+): Promise<Array<RamEpisode>> =>
+  (get("episode", ids) as unknown) as Promise<Array<RamEpisode>>;
+
+export const getEpisodesByFilter = async (
+  filter: RamEpisodeFilter
+): Promise<Array<RamEpisode>> =>
+  (get("episode", filter) as unknown) as Promise<Array<RamEpisode>>;
+
+// Lugares
+
+export const getAllLocations = async (): Promise<Array<RamLocation>> =>
+  (get("location", "all") as unknown) as Promise<Array<RamLocation>>;
+
+export const getLocationsById = async (
+  ids: Array<number>
+): Promise<Array<RamLocation>> =>
+  (get("location", ids) as unknown) as Promise<Array<RamLocation>>;
+
+export const getLocationsByFilter = async (
+  filter: RamLocationFilter
+): Promise<Array<RamLocation>> =>
+  (get("location", filter) as unknown) as Promise<Array<RamLocation>>;
+
+// Personajes
+
+export const getAllCharacters = async (): Promise<Array<RamCharacter>> =>
+  (get("character", "all") as unknown) as Promise<Array<RamCharacter>>;
+
+export const getCharactersById = async (
+  ids: Array<number>
+): Promise<Array<RamCharacter>> =>
+  (get("character", ids) as unknown) as Promise<Array<RamCharacter>>;
+
+export const getCharactersByFilter = async (
+  filter: RamCharacterFilter
+): Promise<Array<RamCharacter>> =>
+  (get("character", filter) as unknown) as Promise<Array<RamCharacter>>;
 
 export default {
-  getEpisode,
-  getLocation,
-  getCharacter,
+  getAllEpisodes,
+  getEpisodesById,
+  getEpisodesByFilter,
+  getAllLocations,
+  getLocationsById,
+  getLocationsByFilter,
+  getAllCharacters,
+  getCharactersById,
+  getCharactersByFilter,
 };
 
 // INTERNAL
+
+type InternalFilter<T> = T & {
+  page?: number;
+};
 
 type GetType = "episode" | "character" | "location";
 
 const get = async (
   type: GetType,
-  opts?: Record<string, string> | number | Array<number>
-) => {
-  const id =
-    typeof opts === "number"
-      ? opts.toString()
-      : Array.isArray(opts)
-      ? opts.join(",")
-      : "";
+  opts?:
+    | InternalFilter<RamEpisodeFilter>
+    | InternalFilter<RamLocationFilter>
+    | InternalFilter<RamCharacterFilter>
+    | Array<number>
+    | "all"
+): Promise<Array<RamResponse<RamEpisode | RamLocation | RamCharacter>>> => {
+  const id = Array.isArray(opts) ? opts.join(",") : "";
   const params =
-    typeof opts === "object" && !Array.isArray(opts)
-      ? new URLSearchParams(opts).toString()
+    opts !== "all" && !Array.isArray(opts)
+      ? new URLSearchParams(fixOpts(opts)).toString()
       : "";
   const response = await fetch(
     `https://rickandmortyapi.com/api/${type}/${id}?${params}`
   );
   const data = await response.json();
-  return data;
+
+  if (Array.isArray(data)) {
+    return data;
+  } else if (data.info) {
+    let result = data.results;
+    let newData: RamResponse<any> = data;
+    while (newData.info.next) {
+      const response = await fetch(newData.info.next);
+      newData = await response.json();
+      result = result.concat(newData.results);
+    }
+    return result;
+  } else {
+    return [];
+  }
 };
 
 const fixOpts = (opts: any) =>

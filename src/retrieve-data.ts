@@ -1,47 +1,50 @@
 import {
-  getCharacter,
-  getEpisode,
-  getLocation,
+  getAllCharacters,
+  getAllEpisodes,
+  getCharactersByFilter,
+  getCharactersById,
+  getEpisodesByFilter,
+  getLocationsByFilter,
   RamCharacter,
   RamEpisode,
   RamLocation,
-  RamResponse,
   Url,
 } from "./ram-api";
 import { flatten, uniq } from "ramda";
 import { EpisodeNumber, EpisodeWithOrigins } from "./components/types";
 
-export const countLocationsWithLetter = async (
+export const countLetterInLocations = async (
   letter: string
 ): Promise<number> => {
-  const response = await getLocation({ name: letter });
-  return (response as RamResponse<RamLocation>).info?.count ?? 0;
+  const locations = await getLocationsByFilter({ name: letter });
+  return countLetters(letter, locations);
 };
 
-export const countEpisodesWithLetter = async (
+export const countLetterInEpisodes = async (
   letter: string
 ): Promise<number> => {
-  const response = await getEpisode({ name: letter });
-  return (response as RamResponse<RamEpisode>).info?.count ?? 0;
+  checkEpisodes();
+  return countLetters(letter, await episodes);
 };
 
-export const countCharactersWithLetter = async (
+export const countLetterInCharacters = async (
   letter: string
 ): Promise<number> => {
-  const response = await getCharacter({ name: letter });
-  return (response as RamResponse<RamCharacter>).info?.count ?? 0;
+  const characters = await getCharactersByFilter({ name: letter });
+  return countLetters(letter, characters);
 };
 
 export const getCharacterOriginsPerEpisode = async (): Promise<
   Array<EpisodeWithOrigins>
 > => {
-  const episodes = await getAllEpisodes();
+  checkEpisodes();
+  const allEps = await episodes;
   const characterIds = uniq(
-    flatten(episodes.map((ep) => ep.characters.map(idFromUrl)))
+    flatten(allEps.map((ep) => ep.characters.map(idFromUrl)))
   );
-  const characters = (await getCharacter(characterIds)) as Array<RamCharacter>;
+  const characters = await getCharactersById(characterIds);
 
-  const result = episodes.map((ep) => ({
+  const result = allEps.map((ep) => ({
     title: ep.name,
     number: episodeSeasonFromString(ep.episode),
     origins: getOrigins(characters, ep.characters),
@@ -52,16 +55,18 @@ export const getCharacterOriginsPerEpisode = async (): Promise<
 
 // INTERNAL
 
-const getAllEpisodes = async () => {
-  let episodes: Array<RamEpisode> = [];
-  let page = 1;
-  while (true) {
-    const response = (await getEpisode({ page })) as RamResponse<RamEpisode>;
-    episodes = episodes.concat(response.results);
-    ++page;
-    if (!response.info.next) break;
-  }
-  return episodes;
+let episodes: Promise<Array<RamEpisode>>;
+
+const countLetters = (
+  letter: string,
+  list: Array<{ name: string }>
+): number => {
+  const letterNormalized = letter.toLowerCase();
+  return list.reduce((acc, { name }) => {
+    const countName =
+      name.length - name.toLowerCase().replaceAll(letterNormalized, "").length;
+    return acc + countName;
+  }, 0);
 };
 
 const idFromUrl = (url: string) => {
@@ -86,4 +91,10 @@ const getOrigins = (
   const epChars = characters.filter(({ id }) => epCharIds.includes(id));
   const origins = uniq(epChars.map((ch) => ch.origin.name));
   return origins;
+};
+
+const checkEpisodes = () => {
+  if (!episodes) {
+    episodes = getAllEpisodes();
+  }
 };
