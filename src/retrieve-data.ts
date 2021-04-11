@@ -30,26 +30,24 @@ export const countLetterInEpisodes = async (
 export const countLetterInCharacters = async (
   letter: string
 ): Promise<number> => {
-  checkCharacters();
-  return countLetters(letter, await characters);
+  const characters = await getCharactersByFilter({ name: letter });
+  return countLetters(letter, characters);
 };
 
 export const getCharacterOriginsPerEpisode = async (): Promise<
   Array<EpisodeWithOrigins>
 > => {
   checkEpisodes();
-  checkCharacters();
   const allEps = await episodes;
-  const allChars = await characters;
   const characterIds = uniq(
     flatten(allEps.map((ep) => ep.characters.map(idFromUrl)))
   );
-  const chars = allChars.filter(({ id }) => characterIds.includes(id));
+  const characters = await getCharactersById(characterIds);
 
   const result = allEps.map((ep) => ({
     title: ep.name,
     number: episodeSeasonFromString(ep.episode),
-    origins: getOrigins(chars, ep.characters),
+    origins: getOrigins(characters, ep.characters),
   }));
 
   return result;
@@ -58,7 +56,6 @@ export const getCharacterOriginsPerEpisode = async (): Promise<
 // INTERNAL
 
 let episodes: Promise<Array<RamEpisode>>;
-let characters: Promise<Array<RamCharacter>>;
 
 const countLetters = (
   letter: string,
@@ -99,10 +96,5 @@ const getOrigins = (
 const checkEpisodes = () => {
   if (!episodes) {
     episodes = getAllEpisodes();
-  }
-};
-const checkCharacters = () => {
-  if (!characters) {
-    characters = getAllCharacters();
   }
 };
