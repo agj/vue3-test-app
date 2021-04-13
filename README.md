@@ -18,7 +18,7 @@ Se puede ver aquí: https://agj.github.io/vue3-test-app/
 
 ## Para compilar
 
-Usando Node (hecho en versión 15.12.0) y NPM. En la línea de comandos, primero instalar dependencias con:
+Requiere Node (hecho en versión 15.12.0) y NPM. En la línea de comandos, primero instalar dependencias con:
 
 ```
 npm install
