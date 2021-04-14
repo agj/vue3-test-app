@@ -1,13 +1,10 @@
 import {
-  getAllCharacters,
   getAllEpisodes,
   getCharactersByFilter,
   getCharactersById,
-  getEpisodesByFilter,
   getLocationsByFilter,
   RamCharacter,
   RamEpisode,
-  RamLocation,
   Url,
 } from "./ram-api";
 import { flatten, uniq } from "ramda";
