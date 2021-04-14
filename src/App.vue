@@ -54,7 +54,7 @@ import {
   countLetterInEpisodes,
   countLetterInLocations,
   getCharacterOriginsPerEpisode,
-} from "./retrieve-data";
+} from "./services/retrieve-data";
 
 export default {
   components: {

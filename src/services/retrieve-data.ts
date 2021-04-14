@@ -8,7 +8,7 @@ import {
   Url,
 } from "./ram-api";
 import { flatten, uniq } from "ramda";
-import { EpisodeNumber, EpisodeWithOrigins } from "./components/types";
+import { EpisodeNumber, EpisodeWithOrigins } from "../components/types";
 
 export const countLetterInLocations = async (
   letter: string
