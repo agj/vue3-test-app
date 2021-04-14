@@ -1,4 +1,4 @@
-import { map } from "ramda";
+import { concat, map, merge, range, reduce } from "ramda";
 
 export type RamResponse<T> = {
   info: {
@@ -48,6 +48,7 @@ export type RamCharacter = {
   url: Url;
   created: string;
 };
+export type RamThing = RamEpisode | RamLocation | RamCharacter;
 
 export type RamEpisodeFilter = {
   name?: string;
@@ -65,6 +66,10 @@ export type RamCharacterFilter = {
   type?: string;
   gender?: RamGender;
 };
+export type RamFilter =
+  | RamEpisodeFilter
+  | RamLocationFilter
+  | RamCharacterFilter;
 
 export type RamGender = "Female" | "Male" | "Genderless" | "unknown";
 export type RamCharacterStatus = "Alive" | "Dead" | "unknown";
@@ -78,47 +83,41 @@ export type RamError = {
 // Capítulos
 
 export const getAllEpisodes = async (): Promise<Array<RamEpisode>> =>
-  (get("episode", "all") as unknown) as Promise<Array<RamEpisode>>;
+  get("episode", "all");
 
 export const getEpisodesById = async (
   ids: Array<number>
-): Promise<Array<RamEpisode>> =>
-  (get("episode", ids) as unknown) as Promise<Array<RamEpisode>>;
+): Promise<Array<RamEpisode>> => get("episode", ids);
 
 export const getEpisodesByFilter = async (
   filter: RamEpisodeFilter
-): Promise<Array<RamEpisode>> =>
-  (get("episode", filter) as unknown) as Promise<Array<RamEpisode>>;
+): Promise<Array<RamEpisode>> => get("episode", filter);
 
 // Lugares
 
 export const getAllLocations = async (): Promise<Array<RamLocation>> =>
-  (get("location", "all") as unknown) as Promise<Array<RamLocation>>;
+  get("location", "all");
 
 export const getLocationsById = async (
   ids: Array<number>
-): Promise<Array<RamLocation>> =>
-  (get("location", ids) as unknown) as Promise<Array<RamLocation>>;
+): Promise<Array<RamLocation>> => get("location", ids);
 
 export const getLocationsByFilter = async (
   filter: RamLocationFilter
-): Promise<Array<RamLocation>> =>
-  (get("location", filter) as unknown) as Promise<Array<RamLocation>>;
+): Promise<Array<RamLocation>> => get("location", filter);
 
 // Personajes
 
 export const getAllCharacters = async (): Promise<Array<RamCharacter>> =>
-  (get("character", "all") as unknown) as Promise<Array<RamCharacter>>;
+  get("character", "all");
 
 export const getCharactersById = async (
   ids: Array<number>
-): Promise<Array<RamCharacter>> =>
-  (get("character", ids) as unknown) as Promise<Array<RamCharacter>>;
+): Promise<Array<RamCharacter>> => get("character", ids);
 
 export const getCharactersByFilter = async (
   filter: RamCharacterFilter
-): Promise<Array<RamCharacter>> =>
-  (get("character", filter) as unknown) as Promise<Array<RamCharacter>>;
+): Promise<Array<RamCharacter>> => get("character", filter);
 
 export default {
   getAllEpisodes,
@@ -134,54 +133,61 @@ export default {
 
 // INTERNAL
 
-type InternalFilter<T> = T & {
-  page?: number;
-};
-
 type GetType = "episode" | "character" | "location";
 
-const get = async (
+const get = async <T>(
   type: GetType,
-  opts?:
-    | InternalFilter<RamEpisodeFilter>
-    | InternalFilter<RamLocationFilter>
-    | InternalFilter<RamCharacterFilter>
-    | Array<number>
-    | "all"
-): Promise<Array<RamResponse<RamEpisode | RamLocation | RamCharacter>>> => {
-  const id = Array.isArray(opts) ? opts.join(",") : "";
+  opts?: RamFilter | Array<number> | "all"
+): Promise<Array<T>> => {
+  const ids = Array.isArray(opts) ? opts : [];
   const params =
-    opts !== "all" && !Array.isArray(opts)
-      ? new URLSearchParams(fixOpts(opts)).toString()
-      : "";
-  const response = await fetch(
-    `https://rickandmortyapi.com/api/${type}/${id}?${params}`
-  );
+    opts && opts !== "all" && !Array.isArray(opts) ? fixOpts(opts) : {};
+  const url = makeApiUrl(type, ids, params);
+
+  const response = await fetch(url);
   const data = await response.json();
 
   if (Array.isArray(data)) {
     return data;
   } else if (data.info) {
-    let result = data.results;
-    let newData: RamResponse<any> = data;
-    while (newData.info.next) {
-      const response = await fetch(newData.info.next);
-      newData = await response.json();
-      result = result.concat(newData.results);
-    }
-    return result;
+    const ramResponse: RamResponse<T> = data;
+
+    const pageRequests =
+      ramResponse.info.pages < 2
+        ? []
+        : range(2, ramResponse.info.pages + 1).map((p) => {
+            const pageUrl = makeApiUrl(
+              type,
+              ids,
+              merge({ page: p.toString() }, params)
+            );
+            return fetch(pageUrl);
+          });
+
+    const pageResponses: Array<Response> = await Promise.all(pageRequests);
+    const pageDatas = pageResponses.map(
+      async (r) => (await r.json()) as RamResponse<T>
+    );
+    const pageResults = (await Promise.all(pageDatas)).map((d) => d.results);
+
+    return reduce<Array<T>, Array<T>>(concat, ramResponse.results, pageResults);
   } else {
     return [];
   }
 };
 
-const fixOpts = (opts: any) =>
-  typeof opts === "object" && !Array.isArray(opts)
-    ? toStringValues(opts)
-    : opts;
+const fixOpts = (opts: RamFilter): Record<string, string> =>
+  toStringValues(opts);
 
-const toStringValues = (obj: any) =>
-  (map((v: any) => v?.toString() ?? "", obj) as unknown) as Record<
-    string,
-    string
-  >;
+const toStringValues = (obj: Record<string, any>): Record<string, string> =>
+  map((v: any) => v?.toString() ?? "", obj);
+
+const makeApiUrl = (
+  type: GetType,
+  ids: Array<number>,
+  params: Record<string, string>
+): Url => {
+  const idsString = ids.join(",");
+  const paramsString = new URLSearchParams(params).toString();
+  return `https://rickandmortyapi.com/api/${type}/${idsString}?${paramsString}`;
+};

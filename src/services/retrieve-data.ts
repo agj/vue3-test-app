@@ -1,17 +1,14 @@
 import {
-  getAllCharacters,
   getAllEpisodes,
   getCharactersByFilter,
   getCharactersById,
-  getEpisodesByFilter,
   getLocationsByFilter,
   RamCharacter,
   RamEpisode,
-  RamLocation,
   Url,
 } from "./ram-api";
 import { flatten, uniq } from "ramda";
-import { EpisodeNumber, EpisodeWithOrigins } from "./components/types";
+import { EpisodeNumber, EpisodeWithOrigins } from "../components/types";
 
 export const countLetterInLocations = async (
   letter: string
@@ -70,13 +67,13 @@ const countLetters = (
 };
 
 const idFromUrl = (url: string) => {
-  const n = url.match(/\/(\d+)$/) ?? [];
-  return parseInt(n[1]);
+  const id = url.match(/\/(\d+)$/)?.[1] ?? "";
+  return parseInt(id);
 };
 
 const episodeSeasonFromString = (code: string): EpisodeNumber => {
-  const s = (code.match(/S(\d\d)/) ?? [])[1];
-  const e = (code.match(/E(\d\d)/) ?? [])[1];
+  const s = code.match(/S(\d\d)/)?.[1] ?? "";
+  const e = code.match(/E(\d\d)/)?.[1] ?? "";
   return {
     season: parseInt(s),
     episode: parseInt(e),

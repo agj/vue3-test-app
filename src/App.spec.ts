@@ -2,11 +2,11 @@ import { mount } from "@vue/test-utils";
 import AwaitPromises from "await-promises";
 import { mocked } from "ts-jest/utils";
 import App from "./App.vue";
-import * as retrieveData from "./retrieve-data";
+import * as retrieveData from "./services/retrieve-data";
 
 // MOCKS
 
-jest.mock("./retrieve-data");
+jest.mock("./services/retrieve-data");
 
 const mockRetrieveData = mocked(retrieveData);
 

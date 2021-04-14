@@ -44,7 +44,7 @@
 </template>
 
 <script lang="ts">
-import { ref, reactive } from "vue";
+import { ref } from "vue";
 import { LetterCountData, EpisodeWithOrigins } from "./components/types";
 
 import LetterCount from "./components/LetterCount.vue";
@@ -54,7 +54,7 @@ import {
   countLetterInEpisodes,
   countLetterInLocations,
   getCharacterOriginsPerEpisode,
-} from "./retrieve-data";
+} from "./services/retrieve-data";
 
 export default {
   components: {

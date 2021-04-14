@@ -62,21 +62,20 @@ const character = (
 
 const apiUrl = (rest: string) => "https://rickandmortyapi.com/api/" + rest;
 
-type Named = { name: string };
-function getByFilter<T>(list: Array<T>) {
+function getByFilter<T extends { name: string }>(list: Array<T>) {
   return async (
     filter: RamCharacterFilter | RamEpisodeFilter | RamLocationFilter
   ): Promise<Array<T>> => {
     const filterName = filter.name?.toLowerCase() ?? "";
     return list.filter((obj) => {
-      const objName = ((obj as unknown) as Named).name.toLowerCase();
+      const objName = obj.name.toLowerCase();
       return objName.includes(filterName);
     });
   };
 }
 function getById<T>(list: Array<T>) {
   return async (ids: Array<number>): Promise<Array<T>> =>
-    ids.map((id) => list[id - 1]);
+    ids.map((id) => list[id - 1]!);
 }
 
 // MOCKS

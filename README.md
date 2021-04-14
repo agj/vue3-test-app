@@ -15,10 +15,11 @@ Se puede ver aquí: https://agj.github.io/vue3-test-app/
 [ts]: https://www.typescriptlang.org/
 [vue-test]: https://next.vue-test-utils.vuejs.org/
 [jest]: https://jestjs.io/
+[node]: https://nodejs.org/
 
 ## Para compilar
 
-En la línea de comandos, primero instalar dependencias con:
+Requiere [Node][node] (testeado en versión 15.12.0) y NPM. En la línea de comandos, primero instalar dependencias con:
 
 ```
 npm install
@@ -30,10 +31,18 @@ Luego se puede compilar con:
 npm run build
 ```
 
-Y ver localmente con:
+El resultado de la compilación estará en la carpeta `dist`.
+
+Para ver localmente, usar:
 
 ```
 npm run serve
 ```
 
 …y luego abrir el URL que aparece.
+
+## Para correr las pruebas
+
+```
+npm test
+```
