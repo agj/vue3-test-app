@@ -1,4 +1,4 @@
-import { map } from "ramda";
+import { concat, map, merge, range, reduce } from "ramda";
 
 export type RamResponse<T> = {
   info: {
@@ -133,44 +133,61 @@ export default {
 
 // INTERNAL
 
-type InternalFilter<T> = T & {
-  page?: number;
-};
-
 type GetType = "episode" | "character" | "location";
 
 const get = async <T>(
   type: GetType,
   opts?: RamFilter | Array<number> | "all"
 ): Promise<Array<T>> => {
-  const id = Array.isArray(opts) ? opts.join(",") : "";
+  const ids = Array.isArray(opts) ? opts : [];
   const params =
-    opts && opts !== "all" && !Array.isArray(opts)
-      ? new URLSearchParams(fixOpts(opts)).toString()
-      : "";
-  const response = await fetch(
-    `https://rickandmortyapi.com/api/${type}/${id}?${params}`
-  );
+    opts && opts !== "all" && !Array.isArray(opts) ? fixOpts(opts) : {};
+  const url = makeApiUrl(type, ids, params);
+
+  const response = await fetch(url);
   const data = await response.json();
 
   if (Array.isArray(data)) {
     return data;
   } else if (data.info) {
-    let result = data.results;
-    let newData: RamResponse<any> = data;
-    while (newData.info.next) {
-      const response = await fetch(newData.info.next);
-      newData = await response.json();
-      result = result.concat(newData.results);
-    }
-    return result;
+    const ramResponse: RamResponse<T> = data;
+
+    const pageRequests =
+      ramResponse.info.pages < 2
+        ? []
+        : range(2, ramResponse.info.pages + 1).map((p) => {
+            const pageUrl = makeApiUrl(
+              type,
+              ids,
+              merge({ page: p.toString() }, params)
+            );
+            return fetch(pageUrl);
+          });
+
+    const pageResponses: Array<Response> = await Promise.all(pageRequests);
+    const pageDatas = pageResponses.map(
+      async (r) => (await r.json()) as RamResponse<T>
+    );
+    const pageResults = (await Promise.all(pageDatas)).map((d) => d.results);
+
+    return reduce<Array<T>, Array<T>>(concat, ramResponse.results, pageResults);
   } else {
     return [];
   }
 };
 
-const fixOpts = (opts: RamFilter) =>
-  !Array.isArray(opts) ? toStringValues(opts) : opts;
+const fixOpts = (opts: RamFilter): Record<string, string> =>
+  toStringValues(opts);
 
 const toStringValues = (obj: Record<string, any>): Record<string, string> =>
   map((v: any) => v?.toString() ?? "", obj);
+
+const makeApiUrl = (
+  type: GetType,
+  ids: Array<number>,
+  params: Record<string, string>
+): Url => {
+  const idsString = ids.join(",");
+  const paramsString = new URLSearchParams(params).toString();
+  return `https://rickandmortyapi.com/api/${type}/${idsString}?${paramsString}`;
+};

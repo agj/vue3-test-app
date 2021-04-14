@@ -8,12 +8,10 @@ import {
   getAllCharacters,
   getCharactersById,
   getCharactersByFilter,
-  RamResponse,
   RamEpisode,
   RamLocation,
   RamCharacter,
   Url,
-  RamEpisodeFilter,
   RamCharacterFilter,
 } from "./ram-api";
 
@@ -91,11 +89,14 @@ describe("getEpisodesByFilter", () => {
 
     expect(res).toEqual([episode(1), episode(2), episode(3), episode(4)]);
 
-    expect(mockFetch).toHaveBeenNthCalledWith(
-      1,
-      apiUrl(`episode/?name=${filter.name}&episode=${filter.episode}`)
-    );
-    expect(mockFetch).toHaveBeenNthCalledWith(2, apiUrl(`episode/?page=2`));
+    const fetchCalls = mockFetch.mock.calls;
+
+    expect(urlParam("name", fetchCalls[0])).toBe(filter.name);
+    expect(urlParam("episode", fetchCalls[0])).toBe(filter.episode);
+
+    expect(urlParam("name", fetchCalls[1])).toBe(filter.name);
+    expect(urlParam("episode", fetchCalls[1])).toBe(filter.episode);
+    expect(urlParam("page", fetchCalls[1])).toBe("2");
   });
 });
 
@@ -166,13 +167,16 @@ describe("getLocationsByFilter", () => {
 
     expect(res).toEqual([location(1), location(2), location(3), location(4)]);
 
-    expect(mockFetch).toHaveBeenNthCalledWith(
-      1,
-      apiUrl(
-        `location/?name=${filter.name}&type=${filter.type}&dimension=${filter.dimension}`
-      )
-    );
-    expect(mockFetch).toHaveBeenNthCalledWith(2, apiUrl(`location/?page=2`));
+    const fetchCalls = mockFetch.mock.calls;
+
+    expect(urlParam("name", fetchCalls[0])).toBe(filter.name);
+    expect(urlParam("type", fetchCalls[0])).toBe(filter.type);
+    expect(urlParam("dimension", fetchCalls[0])).toBe(filter.dimension);
+
+    expect(urlParam("name", fetchCalls[1])).toBe(filter.name);
+    expect(urlParam("type", fetchCalls[1])).toBe(filter.type);
+    expect(urlParam("dimension", fetchCalls[1])).toBe(filter.dimension);
+    expect(urlParam("page", fetchCalls[1])).toBe("2");
   });
 });
 
@@ -259,13 +263,20 @@ describe("getCharactersByFilter", () => {
       character(4),
     ]);
 
-    expect(mockFetch).toHaveBeenNthCalledWith(
-      1,
-      apiUrl(
-        `character/?name=${filter.name}&status=${filter.status}&species=${filter.species}&type=${filter.type}&gender=${filter.gender}`
-      )
-    );
-    expect(mockFetch).toHaveBeenNthCalledWith(2, apiUrl(`character/?page=2`));
+    const fetchCalls = mockFetch.mock.calls;
+
+    expect(urlParam("name", fetchCalls[0])).toBe(filter.name);
+    expect(urlParam("status", fetchCalls[0])).toBe(filter.status);
+    expect(urlParam("species", fetchCalls[0])).toBe(filter.species);
+    expect(urlParam("type", fetchCalls[0])).toBe(filter.type);
+    expect(urlParam("gender", fetchCalls[0])).toBe(filter.gender);
+
+    expect(urlParam("name", fetchCalls[1])).toBe(filter.name);
+    expect(urlParam("status", fetchCalls[1])).toBe(filter.status);
+    expect(urlParam("species", fetchCalls[1])).toBe(filter.species);
+    expect(urlParam("type", fetchCalls[1])).toBe(filter.type);
+    expect(urlParam("gender", fetchCalls[1])).toBe(filter.gender);
+    expect(urlParam("page", fetchCalls[1])).toBe("2");
   });
 });
 
@@ -344,3 +355,6 @@ const character = (id: number): RamCharacter => ({
 });
 
 const apiUrl = (rest: string) => "https://rickandmortyapi.com/api/" + rest;
+
+const urlParam = (key: string, url: Url): string | null =>
+  new URL(url).searchParams.get(key);
